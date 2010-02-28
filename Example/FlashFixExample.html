@@ -1,0 +1,193 @@
+<html>
+<head>
+<title>FlashFixExample</title>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/mootools/1.2.4/mootools-yui-compressed.js"></script> 
+<script type="text/javascript" src="../Source/flashfix.js"></script> 
+<script type="text/javascript">
+function labelClick(e)
+{
+	var menu = e.target.getParent();
+	var container = menu.getNext();
+	var tabs = container.getChildren();
+	menu.getChildren().set('class','');
+	e.target.set('class', 'selected');
+	tabs.set('class','hide');
+	tabs[this.index].erase('class');
+	if(this.useFix)
+	{
+		for(var i = 1; i <= 3; i++)
+		{
+			var flash = container.retrieve('flash' + i);
+			if(i == (this.index + 1))
+				FlashFix.show(flash);
+			else
+				FlashFix.hide(flash);
+		}
+	}
+}
+function GetFlashText(index)
+{
+	var texts = [];
+	var container = $('container'+index);
+	for(var i=1;i<=3;i++)
+	{
+		var flash = container.retrieve('flash' + i);
+		try {
+			texts[i-1] = i + ': ' + Swiff.remote(flash.id,'GetText');
+		}
+		catch(e){
+			texts[i-1] = i + ': ' + 'ERROR!';
+		}
+	}
+	alert(texts.join("\n"));
+}
+window.addEvent('domready', function() {
+	window.FlashFix = new FlashFixClass(true);
+	$$('#menu0 li').each(function(label,i){
+		label.addEvent('click', labelClick.bindWithEvent({index:i}));
+	});
+	$$('#menu1 li').each(function(label,i){
+		label.addEvent('click', labelClick.bindWithEvent({index:i,useFix:true}));
+	});
+	$$('#menu2 li').each(function(label,i){
+		label.addEvent('click', labelClick.bindWithEvent({index:i,useFix:true}));
+	});
+	$('button0').addEvent('click',GetFlashText.pass(0));
+	$('button1').addEvent('click',GetFlashText.pass(1));
+	$('button2').addEvent('click',GetFlashText.pass(2));
+
+	var container = $('container0');
+	container.store('flash1', $(new Swiff('flashpad/flashpad.swf', {width: 500, height: 400, container:'c0_tab1',params:{wmode: 'window'}})));
+	container.store('flash2', $(new Swiff('flashpad/flashpad.swf', {width: 500, height: 400, container:'c0_tab2',params:{wmode: 'window'}})));
+	container.store('flash3', $(new Swiff('flashpad/flashpad.swf', {width: 500, height: 400, container:'c0_tab3',params:{wmode: 'window'}})));
+	
+	container = $('container1');
+	var obj = $(new Swiff('flashpad/flashpad.swf', {width: 500, height: 400,params:{wmode: 'window'}}));
+	FlashFix.insert(obj, 'c1_tab1');
+	container.store('flash1', obj);
+	obj = $(new Swiff('flashpad/flashpad.swf', {width: 500, height: 300,params:{wmode: 'window'}}));
+	FlashFix.insert(obj, 'c1_tab2', true);
+	container.store('flash2', obj);
+	obj = $(new Swiff('flashpad/flashpad.swf', {width: 500, height: 200,params:{wmode: 'window'}}));
+	FlashFix.insert(obj, 'c1_tab3', true);
+	container.store('flash3', obj);
+
+	container = $('container2');
+	var obj = $(new Swiff('flashpad/flashpad.swf', {width: 500, height: 400,params:{wmode: 'window'}}));
+	FlashFix.insert(obj, 'c2_tab1');
+	container.store('flash1', obj);
+	obj = $(new Swiff('flashpad/flashpad.swf', {width: 500, height: 300,params:{wmode: 'window'}}));
+	FlashFix.insert(obj, 'c2_tab2', true);
+	container.store('flash2', obj);
+	obj = $(new Swiff('flashpad/flashpad.swf', {width: 500, height: 200,params:{wmode: 'window'}}));
+	FlashFix.insert(obj, 'c2_tab3', true);
+	container.store('flash3', obj);
+});
+</script>
+<style>
+ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+li {
+	float: left;
+	margin: 0 0.15em;
+	padding: 5px;
+	border-top:5px solid blue;
+	border-left:5px solid blue;
+	border-right:5px solid blue;
+	cursor:pointer;
+	background: #fff;
+}
+li.selected {
+	background:blue;
+	color:yellow;
+	font-weight:bold;
+}
+#container1 {
+	margin-bottom:1em;
+}
+.container {
+	clear: both;
+	background: blue;
+	padding:5px;
+}
+.container div {
+	background: white;
+	padding: 5px;
+}
+.hide {
+	display:none;
+}
+</style>
+</head>
+<body bgcolor="#dddddd">
+	<h3>Tabs without FlashFix</h3>
+	<p>You can not access tabs, when 'display':none is set. But you can access them when 'visibility':hidden is set. This plugin uses 'position':absolute to hide the flash.</p>
+	<button id="button0">GetText</button>
+	<ul id="menu0">
+		<li class="selected">Tab 1</li>
+		<li>Tab 2</li>
+		<li>Tab 3</li>
+	</ul>
+	<div id="container0" class="container">
+		<div>
+			Tab 1 content:
+			<div id="c0_tab1"></div>
+		</div>
+		<div class="hide">
+			Tab 2 content:
+			<div id="c0_tab2"></div>
+		</div>
+		<div class="hide">
+			Tab 3 content:
+			<div id="c0_tab3"></div>
+		</div>
+	</div>
+	<button id="button1">GetText</button>
+
+	<ul id="menu1">
+		<li class="selected">Tab 1</li>
+		<li>Tab 2</li>
+		<li>Tab 3</li>
+	</ul>
+	<div id="container1" class="container">
+		<div>
+			Tab 1 content:
+			<div id="c1_tab1"></div>
+		</div>
+		<div class="hide">
+			Tab 2 content:
+			<div id="c1_tab2"></div>
+		</div>
+		<div class="hide">
+			Tab 3 content:
+			<div id="c1_tab3"></div>
+		</div>
+	</div>
+	<button id="button2">GetText</button>
+
+	<ul id="menu2">
+		<li class="selected">Tab 1</li>
+		<li>Tab 2</li>
+		<li>Tab 3</li>
+	</ul>
+	<div id="container2" class="container">
+		<div>
+			Tab 1 content:
+			<div id="c2_tab1"></div>
+		</div>
+		<div class="hide">
+			Tab 2 content:
+			<div id="c2_tab2"></div>
+		</div>
+		<div class="hide">
+			Tab 3 content:
+			<div id="c2_tab3"></div>
+		</div>
+	</div>
+	
+
+</body>
+</html>
