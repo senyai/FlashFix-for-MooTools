@@ -33,10 +33,10 @@ function GetFlashText(index)
 	{
 		var flash = container.retrieve('flash' + i);
 		try {
-			texts[i-1] = i + ': ' + Swiff.remote(flash.id,'GetText');
+			texts[i-1] = i + ': ' + Swiff.remote(flash.object,'GetText');
 		}
 		catch(e){
-			texts[i-1] = i + ': ' + 'ERROR!';
+			texts[i-1] = i + ': ' + 'ERROR! (' + e + ')';
 		}
 	}
 	alert(texts.join("\n"));
@@ -57,29 +57,29 @@ window.addEvent('domready', function() {
 	$('button2').addEvent('click',GetFlashText.pass(2));
 
 	var container = $('container0');
-	container.store('flash1', $(new Swiff('flashpad/flashpad.swf', {width: 500, height: 400, container:'c0_tab1',params:{wmode: 'window'}})));
-	container.store('flash2', $(new Swiff('flashpad/flashpad.swf', {width: 500, height: 400, container:'c0_tab2',params:{wmode: 'window'}})));
-	container.store('flash3', $(new Swiff('flashpad/flashpad.swf', {width: 500, height: 400, container:'c0_tab3',params:{wmode: 'window'}})));
+	container.store('flash1', new Swiff('flashpad/flashpad.swf', {width: 500, height: 400, container:'c0_tab1',params:{wmode: 'window'}}));
+	container.store('flash2', new Swiff('flashpad/flashpad.swf', {width: 500, height: 400, container:'c0_tab2',params:{wmode: 'window'}}));
+	container.store('flash3', new Swiff('flashpad/flashpad.swf', {width: 500, height: 400, container:'c0_tab3',params:{wmode: 'window'}}));
 	
 	container = $('container1');
-	var obj = $(new Swiff('flashpad/flashpad.swf', {width: 500, height: 400,params:{wmode: 'window'}}));
+	var obj = new Swiff('flashpad/flashpad.swf', {width: 500, height: 400,params:{wmode: 'window'}});
 	FlashFix.insert(obj, 'c1_tab1');
 	container.store('flash1', obj);
-	obj = $(new Swiff('flashpad/flashpad.swf', {width: 500, height: 300,params:{wmode: 'window'}}));
+	obj = new Swiff('flashpad/flashpad.swf', {width: 500, height: 300,params:{wmode: 'window'}});
 	FlashFix.insert(obj, 'c1_tab2', true);
 	container.store('flash2', obj);
-	obj = $(new Swiff('flashpad/flashpad.swf', {width: 500, height: 200,params:{wmode: 'window'}}));
+	obj = new Swiff('flashpad/flashpad.swf', {width: 500, height: 200,params:{wmode: 'window'}});
 	FlashFix.insert(obj, 'c1_tab3', true);
 	container.store('flash3', obj);
 
 	container = $('container2');
-	var obj = $(new Swiff('flashpad/flashpad.swf', {width: 500, height: 400,params:{wmode: 'window'}}));
+	var obj = new Swiff('flashpad/flashpad.swf', {width: 500, height: 400,params:{wmode: 'window'}});
 	FlashFix.insert(obj, 'c2_tab1');
 	container.store('flash1', obj);
-	obj = $(new Swiff('flashpad/flashpad.swf', {width: 500, height: 300,params:{wmode: 'window'}}));
+	obj = new Swiff('flashpad/flashpad.swf', {width: 500, height: 300,params:{wmode: 'window'}});
 	FlashFix.insert(obj, 'c2_tab2', true);
 	container.store('flash2', obj);
-	obj = $(new Swiff('flashpad/flashpad.swf', {width: 500, height: 200,params:{wmode: 'window'}}));
+	obj = new Swiff('flashpad/flashpad.swf', {width: 500, height: 200,params:{wmode: 'window'}});
 	FlashFix.insert(obj, 'c2_tab3', true);
 	container.store('flash3', obj);
 });

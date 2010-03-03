@@ -1,3 +1,20 @@
+/*
+---
+description: 
+
+license: MIT-style
+
+authors:
+- Arseniy Terekhin (Senyai)
+
+requires:
+- Swiff
+- Browser
+
+provides: [FlashFixClass]
+
+...
+*/
 var FlashFixClass = new Class({
 	initialize: function(updatePositions){
 		if(Browser.Engine.trident)
@@ -17,9 +34,9 @@ var FlashFixClass = new Class({
 	insert: function(flash, el, hidden){
 		el = document.id(el);
 		var position = el
-			.setStyles({width:flash.width.toInt(), height:flash.height.toInt()})
+			.setStyles({width:flash.options.width, height:flash.options.height})
 			.getPosition();
-		flash
+		document.id(flash)
 			.store('FlashFix:el', el)
 			.store('FlashFix:hide', !!hidden)
 			.setStyles({
@@ -30,6 +47,7 @@ var FlashFixClass = new Class({
 			.inject(this.container);
 	},
 	show: function(flash){
+		flash = document.id(flash);
 		if(flash.retrieve('FlashFix:hide')){ // show, only if hidden
 			flash.store('FlashFix:hide', false);
 			var position = flash.retrieve('FlashFix:el').getPosition();
@@ -42,6 +60,7 @@ var FlashFixClass = new Class({
 			this.update();
 	},
 	hide: function(flash){
+		flash = document.id(flash);
 		if(!flash.retrieve('FlashFix:hide')){ // hide, only if shown
 			flash
 				.store('FlashFix:hide', true)
