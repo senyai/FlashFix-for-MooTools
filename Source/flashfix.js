@@ -8,8 +8,9 @@ authors:
 - Arseniy Terekhin (Senyai)
 
 requires:
-- Swiff
 - Browser
+- Class
+- Swiff
 
 provides: [FlashFixClass]
 
